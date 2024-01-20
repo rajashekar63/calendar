@@ -1,0 +1,6 @@
+build/
+dist/
+node/
+.cache/
+node_modules/
+.idea/
