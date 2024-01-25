@@ -1,4 +1,6 @@
-import React, { useState, useEffect, ImgHTMLAttributes } from "react";
+import React, { ImgHTMLAttributes } from "react";
+import useImgLoaded from "./useImgLoaded";
+import Loader from "../Loader";
 
 interface ImgProps extends ImgHTMLAttributes<HTMLImageElement> {
   placeholderSrc?: string;
@@ -14,24 +16,16 @@ const Img: React.FC<ImgProps> = ({
   alt,
   ...props
 }) => {
-  const [imgSrc, setImgSrc] = useState<string>(placeholderSrc || src);
-  const customClass =
-    placeholderSrc && imgSrc === placeholderSrc ? "loading" : "loaded";
+  const { loaded } = useImgLoaded(src);
+  const customClass = loaded ? "loading" : "loaded";
 
-  useEffect(() => {
-    const img = new Image();
-    img.src = src;
-    img.onerror = () => {
-      setImgSrc(src);
-    };
-    img.onload = () => {
-      setImgSrc(src);
-    };
-  }, [src]);
+  if (!loaded && !placeholderSrc) {
+    return <Loader size='sm'/>;
+  }
 
   return (
     <img
-      src={imgSrc}
+      src={loaded ? src : placeholderSrc}
       {...props}
       alt={alt}
       className={`img ${className} img--${customClass}`}

@@ -29,15 +29,12 @@
 
     &__day {
       position: relative;
-      padding: 10px;
       text-align: center;
       cursor: pointer;
       width: calc(
         (100vw - 120px) / 7
       ); /* Set the day width based on the viewport width with 10px space and padding */
-      height: calc(
-        (100vh - 120px) / 7
-      ); /* Set the day height based on the viewport height with 10px space and padding */
+      height: 125px;
       box-shadow: 0 0 5px rgba(0, 0, 0, 0.1);
 
       &-name {
@@ -47,9 +44,7 @@
       }
 
       &__event-container {
-        position: absolute;
-        top: 0;
-        left: 0;
+        border: 0;
         width: 100%;
         height: 100%;
       }

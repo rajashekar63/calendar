@@ -1,6 +1,7 @@
 {
     "include": [
-        "./src/**/*"
+        "./src/**/*",
+        "src/setupTests.ts"
     ],
     "compilerOptions": {
         "strict": true,
@@ -9,6 +10,7 @@
             "dom",
             "es2015"
         ],
+        "types": ["node", "jest"],
         "jsx": "react-jsx"
     }
 }

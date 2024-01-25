@@ -27,6 +27,19 @@
     border-style: solid;
   }
 
+  &--sm {
+    height: 100%;
+
+    .loader__spinner {
+      height: 25px;
+      width: 25px;
+
+      &::after {
+        border-width: 0.255em;
+      }
+    }
+  }
+
   @keyframes spinHourglass {
     0% {
       transform: rotate(0);
