@@ -1,18 +1,9 @@
-import {eachDayOfInterval, endOfMonth, format, getDay, isSameDay, startOfMonth} from "date-fns";
-import {chunk} from "../Utils";
-import Img from "../Img";
+import { eachDayOfInterval, endOfMonth, format, getDay, startOfMonth } from "date-fns";
+import { chunk } from "../Utils";
 import Hero from "../Hero";
-import React, {useEffect, useState} from "react";
-
-interface EventData {
-    launchDate: string;
-    imageFilenameThumb: string;
-    imageFilenameFull: string;
-    title: string;
-    summary: string;
-    learnMoreLink: string;
-    purchaseLink: string;
-};
+import React, { useEffect, useState } from "react";
+import Day from "./Day";
+import { EventData } from "../Constant";
 
 interface DaysProps {
     events: EventData[];
@@ -23,16 +14,18 @@ const Days: React.FC<DaysProps> = ({ events, currentMonth }): JSX.Element => {
     const end = endOfMonth(currentMonth);
     const startDayOfWeek = getDay(start);
     const days = eachDayOfInterval({ start, end });
-    const orderedDays = [...Array(startDayOfWeek).fill(null), ...days];
+    const orderedDays = [...Array(startDayOfWeek).fill(''), ...days];
     const weeks = chunk(orderedDays, 7);
     const [selectedEvent, setSelectedEvent] = useState<{ [key: number]: EventData; }>({});
 
     const handleEventClick = (eventData: EventData, weekIndex: number) => {
-        const event = { [weekIndex]: eventData };
+        if (typeof eventData !== 'undefined') {
+            const event = { [weekIndex]: eventData };
 
-        setSelectedEvent(
-            JSON.stringify(event) === JSON.stringify(selectedEvent) ? {} : event
-        );
+            setSelectedEvent(
+                JSON.stringify(event) === JSON.stringify(selectedEvent) ? {} : event
+            );
+        }
     };
 
     useEffect(() => setSelectedEvent([]),[currentMonth])
@@ -45,31 +38,7 @@ const Days: React.FC<DaysProps> = ({ events, currentMonth }): JSX.Element => {
                 return (
                     <div key={weekIndex} className="calendar__days">
                         {week.map((day, index) => {
-                            if (!day) {
-                                return (
-                                    <div key={index + ' day'} className="calendar__days__day-empty" />
-                                );
-                            }
-
-                            const eventData = events.find((event) => isSameDay(new Date(event.launchDate), day));
-
-                            return (
-                                <div key={day.toString()} className="calendar__days__day">
-                                    {eventData && (
-                                        <button className="calendar__days__day__event-container">
-                                            <Img
-                                                src={`/assets/${eventData.imageFilenameThumb}.webp`}
-                                                alt={eventData.title}
-                                                className="calendar__days__day__event-image"
-                                                onClick={() => handleEventClick(eventData, weekIndex)}
-                                            />
-                                        </button>
-                                    )}
-                                    <span className={`calendar__days__day__number ${eventData ? "calendar__days__day__number--with-event" : ""}`}>
-                                      {format(day, "d")}
-                                    </span>
-                                </div>
-                            );
+                            return <Day key={day.toString() + index} day={day} weekIndex={weekIndex} onClick={handleEventClick} events={events} />
                         })}
                         {selEvent && (
                             <div className="calendar__days__event">

@@ -7,3 +7,13 @@ export const WeekNames: string[] = [
   "Friday",
   "Saturday",
 ];
+
+export interface EventData {
+  launchDate: string;
+  imageFilenameThumb: string;
+  imageFilenameFull: string;
+  title: string;
+  summary: string;
+  learnMoreLink: string;
+  purchaseLink: string;
+};

@@ -9,34 +9,17 @@ import { useNavigate, useParams } from "react-router-dom";
 import { WeekNames } from "./../Constant";
 import "./Calendar.scss";
 import Days from "./Days";
-
-interface EventData {
-  launchDate: string;
-  imageFilenameThumb: string;
-  imageFilenameFull: string;
-  title: string;
-  summary: string;
-  learnMoreLink: string;
-  purchaseLink: string;
-}
+import { EventData } from "../Constant";
 
 const Calendar: React.FC = () => {
-  const { year = "", month = "" } = useParams<{
-    year?: string;
-    month?: string;
-  }>();
+  const { year = "", month = "" } = useParams<{ year?: string; month?: string; }>();
   const navigate = useNavigate();
   const [events, setEvents] = useState<EventData[]>([]);
   const [currentMonth, setCurrentMonth] = useState(() => {
     const parsedYear = parseInt(year, 10);
     const parsedMonth = parseInt(month, 10);
 
-    if (
-      !isNaN(parsedYear) &&
-      !isNaN(parsedMonth) &&
-      parsedMonth >= 1 &&
-      parsedMonth <= 12
-    ) {
+    if (!isNaN(parsedYear) && !isNaN(parsedMonth) && parsedMonth >= 1 && parsedMonth <= 12) {
       return new Date(parsedYear, parsedMonth - 1);
     }
 
